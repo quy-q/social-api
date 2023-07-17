@@ -4,7 +4,6 @@ import { PostModule } from './post/post.module';
 import { UserModule } from './user/user.module';
 import { LikeModule } from './like/like.module';
 import { CommentModule } from './comment/comment.module';
-import { MarketModule } from './market/market.module';
 import { DatingModule } from './dating/dating.module';
 import { RecommentModule } from './recomment/recomment.module';
 import { ChattingModule } from './chatting/chatting.module';
@@ -14,6 +13,7 @@ import { FollowingModule } from './following/following.module';
 import { ProductModule } from './product/product.module';
 import { ProductCategoryModule } from './product-category/product-category.module';
 import { OrderModule } from './order/order.module';
+
 @Module({
   imports: [
     AuthenticationModule,
@@ -21,7 +21,6 @@ import { OrderModule } from './order/order.module';
     PostModule,
     LikeModule,
     CommentModule,
-    MarketModule,
     DatingModule,
     RecommentModule,
     ChattingModule,

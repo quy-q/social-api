@@ -10,6 +10,7 @@ import { UserService } from 'src/modules/api/client/user/user.service';
 
 interface TokenPayload {
   userId: string;
+  _id: string;
 }
 
 Injectable();
@@ -23,9 +24,14 @@ export class AuthenticationBaseService extends BaseService {
   }
 
   public async getUserFromAuthenticationToken(token: string) {
+    console.log('token:', token);
     const payload: TokenPayload = this.jwtService.verify(token, {
       secret: process.env.JWTKEY,
     });
+    console.log('payload:', payload);
+    if (payload._id) {
+      return this.userService.findOne(payload.userId);
+    }
     if (payload.userId) {
       return this.userService.findOne(payload.userId);
     }

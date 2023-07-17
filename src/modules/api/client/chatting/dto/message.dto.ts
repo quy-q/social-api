@@ -17,5 +17,5 @@ export class MessageInterface {
   })
   @Allow()
   @IsString()
-  recipent: string;
+  recipient: string;
 }

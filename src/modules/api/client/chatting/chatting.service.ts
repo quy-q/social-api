@@ -15,13 +15,16 @@ export class ChattingService {
   ) {}
 
   async getUserFromSocket(socket: Socket) {
-    console.log('socket:', socket);
-    const cookie = socket.handshake.headers.cookie;
-    const { Authentication: authenticationToken } = parse(cookie);
+    let auth_token = socket.handshake.headers.authentication;
+
+    auth_token = auth_token.toString().split(' ')[1];
+    console.log('auth_token:', auth_token);
+
     const user =
       await this.authenticationService.getUserFromAuthenticationToken(
-        authenticationToken,
+        auth_token,
       );
+
     if (!user) {
       throw new WsException('Invalid credentials.');
     }
@@ -32,11 +35,13 @@ export class ChattingService {
     return await this.chattingRepository.actionGetAll();
   }
 
-  async saveChat(message: MessageInterface, sender: any) {
+  async saveChat(message: any, sender: string, conversation: string) {
     const chat = {
-      ...message,
+      ...JSON.parse(message),
       sender: sender,
+      conversation: conversation,
     };
+    console.log('chat:', chat);
     return await this.chattingRepository.actionCreate(chat);
   }
 }

@@ -2,35 +2,61 @@ import { HttpException, Injectable } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { User } from '@schema';
-import { ProductRepository } from 'src/database/repository/product.repository';
+import { ProductRepository } from 'src/database/repository';
 
 @Injectable()
 export class ProductService {
   constructor(private productRepository: ProductRepository) {}
+
   async create(createProductDto: CreateProductDto, user: User) {
-    const post = this.productRepository.actionCreate({
+    const post = await this.productRepository.actionCreate({
       ...createProductDto,
       user: user._id,
     });
     if (!post) {
-      throw new HttpException('Product cannot create', 402);
+      throw new HttpException('Post cannot create', 402);
     }
     return post;
   }
 
-  findAll() {
-    return `This action returns all product`;
+  /**
+   * get all post by user
+   * @param user
+   * @returns
+   */
+  async findAll(user: User) {
+    return await this.productRepository.findIdOrFail(user._id);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} product`;
+  /**
+   * get post by id
+   * @param id
+   * @returns
+   */
+  async findOne(id: string) {
+    return await this.productRepository.findIdOrFail(id);
   }
 
-  update(id: number, updateProductDto: UpdateProductDto) {
-    return `This action updates a #${id} product`;
+  /**
+   * update market by id
+   * @param id
+   * @param user
+   * @returns
+   */
+  async update(id: string, updateMarketDto: UpdateProductDto) {
+    return await this.productRepository.actionFindByIdAndUpdate(
+      id,
+      updateMarketDto,
+    );
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} product`;
+  /**
+   * remove post by id
+   * @param id
+   * @returns
+   */
+  async remove(id: string) {
+    await this.productRepository.model.deleteMany({ post: id });
+    return await this.productRepository.actionFindByIdAndDelete(id);
   }
 }

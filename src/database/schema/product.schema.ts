@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 import { Comment } from './comment.schema';
 import { User } from './user.schema';
-import { ProductCategory } from './product-category.schema';
+import { Type } from 'class-transformer';
 export type ProductDocument = Product & Document;
 
 @Schema({
@@ -14,24 +14,37 @@ export class Product {
   @Prop({ type: String, required: true })
   title: string;
 
+  @Prop([{ type: String, required: true }])
+  image: [string];
+
   @Prop({ type: String, required: true })
   description: string;
 
   @Prop({ type: String, required: true })
-  image: string;
+  productName: string;
+
+  @Prop({ type: Number, required: true })
+  quantity: number;
 
   @Prop({ type: Number, required: true })
   price: number;
 
-  @Prop({
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-    ref: ProductCategory.name,
-  })
-  category: ProductCategory;
-
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: User.name })
   user: User;
+
+  @Prop({
+    type: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: Comment.name,
+      },
+    ],
+  })
+  @Type(() => Comment)
+  comments: Comment;
+
+  @Prop({ type: String, required: true })
+  province: string;
 
   @Prop({
     type: Date,

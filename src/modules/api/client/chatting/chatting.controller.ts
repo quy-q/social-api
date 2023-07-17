@@ -19,12 +19,8 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { UserDecorator } from 'src/common/decorator';
-import { Chatting, User } from '@schema';
+import { User } from '@schema';
 import { ChattingService } from './chatting.service';
-import { ChattingGateway } from './chatting.gateway';
-import { MessageInterface } from './dto/message.dto';
-import { Socket } from 'socket.io';
-import { ConnectedSocket } from '@nestjs/websockets';
 
 @ApiTags('Chatting')
 @UseGuards(JwtAuthGuard)
@@ -37,10 +33,7 @@ import { ConnectedSocket } from '@nestjs/websockets';
   version: '1',
 })
 export class ChattingController {
-  constructor(
-    private readonly chattingService: ChattingService,
-    private chattingGateway: ChattingGateway,
-  ) {}
+  constructor(private readonly chattingService: ChattingService) {}
   /**
    *
    * @param user
@@ -48,12 +41,8 @@ export class ChattingController {
    */
   @ApiOperation({ summary: 'Chatting' })
   @Post()
-  async findAll(
-    @UserDecorator() user: User,
-    @Res() response,
-    @Body() message: MessageInterface,
-  ) {
-    const data = await this.chattingGateway.listenForMessages(message, user);
+  async getAllMessage(@UserDecorator() user: User, @Res() response) {
+    const data = await this.chattingService.getChats();
     return response.status(HttpStatus.OK).json({
       statusCode: HttpStatus.OK,
       description: 'SUCCESS',

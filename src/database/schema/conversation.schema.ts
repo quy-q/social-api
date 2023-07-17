@@ -2,6 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 import { Chatting } from './chatting.schema';
 import { Post } from './post.schema';
+import { User } from './user.schema';
 
 export type ConversationDocument = Conversation & Document;
 
@@ -13,9 +14,17 @@ export class Conversation {
 
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
-    required: true,
+    ref: User.name,
+    autopopulate: true,
   })
-  chatId: Chatting;
+  sender: User;
+
+  @Prop({
+    type: mongoose.Schema.Types.ObjectId,
+    ref: User.name,
+    autopopulate: true,
+  })
+  recipient: User;
 
   @Prop({
     type: Date,

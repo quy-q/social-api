@@ -5,14 +5,24 @@ import {
   Body,
   Patch,
   Param,
-  Delete,
   UseGuards,
+  Delete,
+  Res,
+  HttpStatus,
+  UseInterceptors,
 } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
-import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/common/guard';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import { UserDecorator } from 'src/common/decorator';
+import { User } from '@schema';
 
 @ApiTags('Order')
 @UseGuards(JwtAuthGuard)
@@ -27,28 +37,91 @@ import { JwtAuthGuard } from 'src/common/guard';
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
+  /**
+   *
+   * @param createPostDto
+   * @returns
+   */
   @Post()
-  create(@Body() createOrderDto: CreateOrderDto) {
-    return this.orderService.create(createOrderDto);
+  async create(
+    @Body() createOrderDto: CreateOrderDto,
+    @UserDecorator() user: User,
+    @Res() response,
+  ) {
+    const data = await this.orderService.create(createOrderDto, user);
+    return response.status(HttpStatus.OK).json({
+      statusCode: HttpStatus.OK,
+      description: 'SUCCESS',
+      data,
+    });
   }
 
+  /**
+   *
+   * @param user
+   * @param response
+   */
+  @ApiOperation({ summary: 'Get list promotion' })
   @Get()
-  findAll() {
-    return this.orderService.findAll();
+  async findAll(@UserDecorator() user: User, @Res() response) {
+    const data = await this.orderService.findAll(user);
+    return response.status(HttpStatus.OK).json({
+      statusCode: HttpStatus.OK,
+      description: 'SUCCESS',
+      data,
+    });
   }
 
+  /**
+   *
+   * @param id
+   * @param response
+   * @returns
+   */
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.orderService.findOne(+id);
+  async findOne(@Param('id') id: string, @Res() response) {
+    const data = await this.orderService.findOne(id);
+    return response.status(HttpStatus.OK).json({
+      statusCode: HttpStatus.OK,
+      description: 'SUCCESS',
+      data,
+    });
   }
 
+  /**
+   *
+   * @param id
+   * @param updateProductDto
+   * @param response
+   * @returns
+   */
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto) {
-    return this.orderService.update(+id, updateOrderDto);
+  async update(
+    @Param('id') id: string,
+    @Body() updateProductDto: UpdateOrderDto,
+    @Res() response,
+  ) {
+    const data = await this.orderService.update(id, updateProductDto);
+    return response.status(HttpStatus.OK).json({
+      statusCode: HttpStatus.OK,
+      description: 'SUCCESS',
+      data,
+    });
   }
 
+  /**
+   *
+   * @param id
+   * @param response
+   * @returns
+   */
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.orderService.remove(+id);
+  async remove(@Param('id') id: string, @Res() response) {
+    const data = await this.orderService.remove(id);
+    return response.status(HttpStatus.OK).json({
+      statusCode: HttpStatus.OK,
+      description: 'SUCCESS',
+      data,
+    });
   }
 }

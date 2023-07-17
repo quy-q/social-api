@@ -2,6 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 import { Post } from './post.schema';
 import { User } from './user.schema';
+import { Conversation } from './conversation.schema';
 export type ChattingDocument = Chatting & Document;
 
 @Schema({
@@ -21,6 +22,16 @@ export class Chatting {
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: User.name })
   recipient: User;
+
+  @Prop({
+    type: mongoose.Schema.Types.ObjectId,
+    ref: Conversation.name,
+    required: true,
+  })
+  conversation: Conversation;
+
+  @Prop({ type: String, required: true, default: 'NORMAL' })
+  type: 'NORMAL' | 'HIDE';
 
   @Prop({
     type: Date,

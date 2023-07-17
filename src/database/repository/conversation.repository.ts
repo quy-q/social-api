@@ -16,4 +16,14 @@ export class ConversationRepository extends BaseService<ConversationDocument> {
   ) {
     super(model);
   }
+
+  async findConversation(
+    sender: string,
+    recipient: string,
+  ): Promise<Conversation> {
+    return await this.model.findOne({
+      sender: sender,
+      recipient: recipient,
+    });
+  }
 }

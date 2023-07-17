@@ -4,17 +4,14 @@ import { BaseService as BaseServiceDeclare } from '../declares/base.service';
 
 @Injectable()
 export class BaseService<T = any> implements BaseServiceDeclare<T> {
-  constructor(protected model) {}
+  constructor(protected model: any) {}
 
   /**
    *
    * @param data
    * @param session
    */
-  async actionCreate(
-    data: any,
-    session: mongoose.ClientSession | null = null,
-  ): Promise<T> {
+  async actionCreate(data: any): Promise<T> {
     try {
       return await this.model.create(data);
     } catch (error) {
@@ -31,9 +28,13 @@ export class BaseService<T = any> implements BaseServiceDeclare<T> {
    * @param data
    * @param user
    */
-  actionFindByIdAndUpdate = async (_id: any, data: any): Promise<T> => {
-    await this.model.findByIdAndUpdate(_id, { ...data });
-    return await this.model.findById(_id);
+  actionFindByIdAndUpdate = async (
+    _id: any,
+    data: any,
+    session: mongoose.ClientSession | null = null,
+  ): Promise<T> => {
+    await this.model.findByIdAndUpdate(_id, { ...data }, session);
+    return await this.model.findById(_id).session(session).exec();
   };
 
   /**
