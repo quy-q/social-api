@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import { Comment } from './comment.schema';
 import { User } from './user.schema';
 import { Type } from 'class-transformer';
+import { ProductCategory } from './product-category.schema';
 export type ProductDocument = Product & Document;
 
 @Schema({
@@ -31,6 +32,9 @@ export class Product {
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: User.name })
   user: User;
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: ProductCategory.name })
+  productCategory: ProductCategory;
 
   @Prop({
     type: [

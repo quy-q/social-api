@@ -41,8 +41,6 @@ export class CommentController {
     @Body() createCommentDto: CreateCommentDto,
     @Res() response,
   ) {
-    console.log('createCommentDto:', createCommentDto);
-    console.log('idPost:', idPost);
     const data = await this.commentService.create(
       createCommentDto,
       user,

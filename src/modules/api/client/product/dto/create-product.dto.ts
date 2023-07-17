@@ -28,6 +28,14 @@ export class CreateProductDto {
   productName: string;
 
   @ApiProperty({
+    description: 'product category ID',
+    type: String,
+  })
+  @Allow()
+  @IsString()
+  productCategory: string;
+
+  @ApiProperty({
     description: 'price',
     type: Number,
   })

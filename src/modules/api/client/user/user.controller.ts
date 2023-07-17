@@ -73,7 +73,6 @@ export class UserController {
   @ApiOkResponse({ description: 'get data success' })
   @Get('/me')
   async findOne(@UserDecorator() user: User, @Res() response) {
-    console.log('user-----:', user);
     const data = await this.userService.findOne(user._id);
     response.status(HttpStatus.OK).json({
       statusCode: HttpStatus.OK,

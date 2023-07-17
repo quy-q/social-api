@@ -73,9 +73,7 @@ export class PostService {
    * @returns
    */
   async postByFollowing(filters: FiltersDto, id: string) {
-    console.log('id:', id);
     const user = await this.followingRepository.model.findOne({ user: id });
-    console.log('user:', user);
     return await this.postRepository.pagination(
       { user: { $in: user.following } },
       filters.page,

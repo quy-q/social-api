@@ -65,7 +65,6 @@ export class PostController {
   @ApiOperation({ summary: 'Get list post' })
   @Get()
   async findAll(@Query() filters: FiltersDto, @Res() response) {
-    console.log('222222222');
     const data = await this.postService.findAll(filters);
     return response.status(HttpStatus.OK).json({
       statusCode: HttpStatus.OK,
@@ -138,8 +137,6 @@ export class PostController {
     @Query() filter: FiltersDto,
     @Res() response,
   ) {
-    console.log('filter:', filter);
-    console.log('user:', user);
     const data = await this.postService.postByFollowing(filter, user._id);
     return response.status(HttpStatus.OK).json({
       statusCode: HttpStatus.OK,

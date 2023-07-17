@@ -99,8 +99,6 @@ export class UploadController {
     @UploadedFile() file: Express.Multer.File,
     @Res() response,
   ) {
-    console.log(file.originalname);
-    console.log(__dirname);
     return response.status(HttpStatus.OK).json({
       statusCode: HttpStatus.OK,
       description: 'image is successfully created',

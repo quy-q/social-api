@@ -9,11 +9,10 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
-
-import { Chatting, User } from '@schema';
 import { ChattingService } from './chatting.service';
 import { MessageInterface } from './dto/message.dto';
 import { ConversationRepository } from 'src/database/repository';
+import { MESSAGE } from 'src/common/constrains';
 
 @WebSocketGateway()
 export class ChattingGateway implements OnGatewayConnection {
@@ -36,20 +35,17 @@ export class ChattingGateway implements OnGatewayConnection {
     });
   }
 
-  @SubscribeMessage('sendMessage')
+  @SubscribeMessage(MESSAGE.SEND_MESSAGE)
   async listenForMessages(
     @MessageBody() message: MessageInterface,
     @ConnectedSocket() socket: Socket,
   ) {
     const user = await this.chattingService.getUserFromSocket(socket);
-    console.log('user:', user);
     const conversation = await this.conversationRepository.findConversation(
       user._id,
       message.recipient,
     );
-    console.log('conversation:', conversation);
     if (!conversation) {
-      console.log(111);
       const conversationCreate = await this.conversationRepository.actionCreate(
         { sender: user._id, recipient: message.recipient },
       );
@@ -58,7 +54,7 @@ export class ChattingGateway implements OnGatewayConnection {
         user._id,
         conversationCreate._id,
       );
-      return this.server.emit('receiveMessage', {
+      return this.server.emit(MESSAGE.RECIEVE_MESSAGE, {
         messaging,
         user,
       });
@@ -68,16 +64,16 @@ export class ChattingGateway implements OnGatewayConnection {
       user._id,
       conversation._id,
     );
-    return this.server.emit('receiveMessage', {
+    return this.server.emit(MESSAGE.RECIEVE_MESSAGE, {
       messaging,
       user,
     });
   }
 
-  @SubscribeMessage('requestAllMessages')
+  @SubscribeMessage(MESSAGE.ALL_MESSAGE)
   async requestAllMessages(@ConnectedSocket() socket: Socket) {
     await this.chattingService.getUserFromSocket(socket);
     const messages = await this.chattingService.getChats();
-    socket.emit('receive_message', messages);
+    socket.emit(MESSAGE.RECIEVE_MESSAGE, messages);
   }
 }

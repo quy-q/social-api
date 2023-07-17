@@ -27,6 +27,18 @@ export class Conversation {
   recipient: User;
 
   @Prop({
+    type: String,
+    required: true,
+  })
+  lastMessage: string;
+
+  @Prop({
+    type: Date,
+    required: true,
+  })
+  lastActivity: Date;
+
+  @Prop({
     type: Date,
     default: Date.now,
   })

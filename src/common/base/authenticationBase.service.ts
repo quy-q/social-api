@@ -24,11 +24,9 @@ export class AuthenticationBaseService extends BaseService {
   }
 
   public async getUserFromAuthenticationToken(token: string) {
-    console.log('token:', token);
     const payload: TokenPayload = this.jwtService.verify(token, {
       secret: process.env.JWTKEY,
     });
-    console.log('payload:', payload);
     if (payload._id) {
       return this.userService.findOne(payload.userId);
     }
@@ -42,7 +40,6 @@ export class AuthenticationBaseService extends BaseService {
    * @param user
    */
   public async login(user: User) {
-    console.log('user:', user);
     const encode = {
       _id: user['_id'],
       username: user.username,

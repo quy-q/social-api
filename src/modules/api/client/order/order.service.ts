@@ -21,8 +21,6 @@ export class OrderService {
       const product = await this.productRepository.findIdOrFail(
         createOrderDto.productId,
       );
-      console.log('createOrderDto:', createOrderDto);
-      console.log('product:', product);
       if (createOrderDto.quantity > product.quantity) {
         throw new HttpException('Too number of products', 403);
       }

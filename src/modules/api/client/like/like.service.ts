@@ -25,7 +25,6 @@ export class LikeService {
     session.startTransaction();
     try {
       if (checkExistLike) {
-        console.log('22222222222', checkExistLike);
         await this.postRepository.decrCountLikePost(idPost);
         await this.likeRepository.actionFindByIdAndDelete(checkExistLike._id);
         const post = await this.postRepository.actionFindById(idPost);
