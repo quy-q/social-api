@@ -48,6 +48,22 @@ export class FirebaseHelper {
     //     throw new HttpException(e.message, HttpStatus.NOT_FOUND);
     //   });
   };
+
+  // async sendNotificationToDevice(
+  //   deviceToken: string,
+  //   title: string,
+  //   body: string,
+  // ): Promise<void> {
+  //   const message: fir.messaging.Message = {
+  //     token: deviceToken,
+  //     notification: {
+  //       title,
+  //       body,
+  //     },
+  //   };
+
+  //   await firebaseAdmin.messaging().send(message);
+  // }
   //   async sendNotification(
   //     userIds,
   //     message: string,

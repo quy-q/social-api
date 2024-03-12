@@ -4,9 +4,7 @@ import { AppModule } from './app.module';
 import { SwaggerClient } from './config/swagger/client.swagger';
 import { SwaggerCms } from './config/swagger/cms.swagger';
 import * as cookieParser from 'cookie-parser';
-require('dotenv').config();
-
-const bodyParser = require('body-parser');
+import * as bodyParser from 'body-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {

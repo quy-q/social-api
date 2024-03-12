@@ -5,3 +5,4 @@ export * from './like.schema';
 export * from './chatting.schema';
 export * from './recomment.schema';
 export * from './product.schema';
+export * from './conversation.schema';

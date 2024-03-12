@@ -17,19 +17,19 @@ export class Order {
   @Prop({ type: Number, required: true })
   price: number;
 
-  @Prop({ type: String, required: true })
+  @Prop({ type: String })
   phoneNumber: string;
 
-  @Prop({ type: String, required: true })
+  @Prop({ type: String })
   address: string;
 
-  @Prop({ type: String, required: true })
+  @Prop({ type: String })
   userName: string;
 
-  @Prop({ type: String, required: true })
+  @Prop({ type: String })
   district: string;
 
-  @Prop({ type: String, required: true })
+  @Prop({ type: String })
   province: string;
 
   @Prop({ type: Number, required: true, default: 1 })

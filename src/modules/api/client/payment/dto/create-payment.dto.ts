@@ -1,14 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Allow, IsNumber, IsString } from 'class-validator';
 
-export class CreateOrderDto {
+export class CreatePaymentDto {
   @ApiProperty({
-    description: 'product ID',
+    description: 'order ID',
     type: String,
   })
   @Allow()
   @IsString()
-  productId: string;
+  orderId: string;
 
   @ApiProperty({
     description: 'user name',

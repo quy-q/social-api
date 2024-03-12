@@ -21,6 +21,7 @@ import {
 import { UserDecorator } from 'src/common/decorator';
 import { User } from '@schema';
 import { ChattingService } from './chatting.service';
+import { CreateChattingDto } from './dto/create-chatting.dto';
 
 @ApiTags('Chatting')
 @UseGuards(JwtAuthGuard)
@@ -40,13 +41,49 @@ export class ChattingController {
    * @param response
    */
   @ApiOperation({ summary: 'Chatting' })
-  @Post()
+  @Get()
   async getAllMessage(@UserDecorator() user: User, @Res() response) {
     const data = await this.chattingService.getChats();
     return response.status(HttpStatus.OK).json({
       statusCode: HttpStatus.OK,
       description: 'SUCCESS',
       data,
+    });
+  }
+
+  /**
+   *
+   * @param user
+   * @param response
+   */
+  @ApiOperation({ summary: 'Get by User' })
+  @Get()
+  async getMessageByUser(@UserDecorator() user: User, @Res() response) {
+    const data = await this.chattingService.getChatByUser(user);
+    return response.status(HttpStatus.OK).json({
+      statusCode: HttpStatus.OK,
+      description: 'SUCCESS',
+      data,
+    });
+  }
+
+  /**
+   *
+   * @param user
+   * @param response
+   */
+  @ApiOperation({ summary: 'Chat' })
+  @Post()
+  async chat(
+    @Body() createChattingDto: CreateChattingDto,
+    @UserDecorator() user: User,
+    @Res() response,
+  ) {
+    // const data = await this.chattingService.chatting(createChattingDto, user);
+    return response.status(HttpStatus.OK).json({
+      statusCode: HttpStatus.OK,
+      description: 'SUCCESS',
+      // data,
     });
   }
 }

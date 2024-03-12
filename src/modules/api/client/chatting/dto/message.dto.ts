@@ -12,10 +12,18 @@ export class MessageInterface {
   message: string;
 
   @ApiProperty({
-    description: 'userId',
+    description: 'recipient',
     type: String,
   })
   @Allow()
   @IsString()
   recipient: string;
+
+  @ApiProperty({
+    description: 'sender',
+    type: String,
+  })
+  @Allow()
+  @IsString()
+  sender: string;
 }

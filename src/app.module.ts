@@ -10,19 +10,19 @@ import { ClientModule } from './modules/api/client/client.module';
 import { ApiRoute } from './router';
 import { BackendModule } from './modules/api/cms/backend.module';
 import { MulterModule } from '@nestjs/platform-express';
-
+import { ConfigModule } from '@nestjs/config';
+import * as mongooseAutoPopulate from 'mongoose-autopopulate';
+import * as mongoosePaginateV2 from 'mongoose-paginate-v2';
 @Module({
   imports: [
-    MongooseModule.forRoot(
-      'mongodb+srv://quynguyen:J1q55fVc6W2hsiSr@social.mx7nvwb.mongodb.net/test',
-      {
-        connectionFactory: (connection) => {
-          connection.plugin(require('mongoose-autopopulate'));
-          connection.plugin(require('mongoose-paginate-v2'));
-          return connection;
-        },
+    ConfigModule.forRoot(),
+    MongooseModule.forRoot(process.env.HOST_DATABASE, {
+      connectionFactory: (connection) => {
+        connection.plugin(mongooseAutoPopulate);
+        connection.plugin(mongoosePaginateV2);
+        return connection;
       },
-    ),
+    }),
     RouterModule.register(ApiRoute),
     ClientModule,
     BackendModule,

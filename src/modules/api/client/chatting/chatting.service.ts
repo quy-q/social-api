@@ -39,20 +39,24 @@ export class ChattingService {
     return await this.chattingRepository.actionGetAll();
   }
 
+  async getChatByUser(user: User): Promise<Chatting[]> {
+    return await this.chattingRepository.model.find({ sender: user._id });
+  }
+
   async saveChat(message: any, sender: string, conversation: string) {
     const chat = {
       ...JSON.parse(message),
       sender: sender,
       conversation: conversation,
     };
-    const lastMessage =
-      await this.converSationRepository.actionFindByIdAndUpdate(conversation, {
-        lastMessage: JSON.parse(message).message,
-        lastActivity: new Date(),
-      });
-    if (!lastMessage) {
-      throw new ExceptionsHandler();
-    }
+    // const lastMessage =
+    //   await this.converSationRepository.actionFindByIdAndUpdate(conversation, {
+    //     lastMessage: JSON.parse(message).message,
+    //     lastActivity: new Date(),
+    //   });
+    // if (!lastMessage) {
+    //   throw new ExceptionsHandler();
+    // }
     return await this.chattingRepository.actionCreate(chat);
   }
 }

@@ -13,6 +13,7 @@ import { FollowingModule } from './following/following.module';
 import { ProductModule } from './product/product.module';
 import { ProductCategoryModule } from './product-category/product-category.module';
 import { OrderModule } from './order/order.module';
+import { PaymentModule } from './payment/payment.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { OrderModule } from './order/order.module';
     ProductModule,
     ProductCategoryModule,
     OrderModule,
+    PaymentModule,
   ],
   providers: [],
   controllers: [],
